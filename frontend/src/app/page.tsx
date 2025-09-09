@@ -1,4 +1,4 @@
-
+"use client"
 import { useState } from 'react';
 
 const historicalFigures = [
@@ -10,12 +10,12 @@ const historicalFigures = [
   {
     name: 'Isaac Newton',
     description: 'Mathematician, Laws of Motion',
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Isaac_Newton_1689.jpg',
+    avatar: '/netwon.jpg',
   },
   {
     name: 'Marie Curie',
     description: 'Chemist, Radioactivity Pioneer',
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Marie_Curie_c1920.jpg',
+    avatar: '/marie.jpg',
   },
 ];
 
@@ -25,31 +25,31 @@ export default function Home() {
   const [input, setInput] = useState('');
 
   return (
-    <main className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Chat with a Historical Figure</h1>
-      <div className="flex flex-wrap gap-8 justify-center mb-10">
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 p-8">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-lg">Chat with a Historical Figure</h1>
+      <div className="flex flex-wrap gap-8 justify-center mb-12">
         {historicalFigures.map((fig, idx) => (
           <div
             key={fig.name}
-            className={`cursor-pointer border rounded-lg p-4 w-64 shadow-md bg-white hover:border-blue-500 transition ${selected === idx ? 'border-blue-500' : ''}`}
+            className={`cursor-pointer border-2 rounded-xl p-5 w-72 shadow-lg bg-gradient-to-br from-gray-800 to-blue-900 hover:from-blue-900 hover:to-gray-800 transition-colors duration-200 ${selected === idx ? 'border-blue-400' : 'border-gray-700'}`}
             onClick={() => { setSelected(idx); setChat([]); }}
           >
-            <img src={fig.avatar} alt={fig.name} className="w-24 h-24 object-cover rounded-full mx-auto mb-2" />
-            <h2 className="text-xl font-semibold text-center">{fig.name}</h2>
-            <p className="text-gray-600 text-center">{fig.description}</p>
+            <img src={fig.avatar} alt={fig.name} className="w-24 h-24 object-cover rounded-full mx-auto mb-3 border-4 border-blue-400 shadow" />
+            <h2 className="text-2xl font-bold text-center text-blue-200 mb-1">{fig.name}</h2>
+            <p className="text-blue-100 text-center text-base">{fig.description}</p>
           </div>
         ))}
       </div>
       {selected !== null && (
-        <section className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-bold mb-4">Chat with {historicalFigures[selected].name}</h3>
-          <div className="h-48 overflow-y-auto border rounded mb-4 p-2 bg-gray-50">
+        <section className="max-w-xl mx-auto bg-gradient-to-br from-gray-800 to-blue-900 rounded-xl shadow-xl p-8 border-2 border-blue-400">
+          <h3 className="text-xl font-bold mb-4 text-blue-200">Chat with {historicalFigures[selected].name}</h3>
+          <div className="h-56 overflow-y-auto border rounded-lg mb-4 p-3 bg-gray-900 border-blue-400">
             {chat.length === 0 ? (
-              <p className="text-gray-400">Start the conversation!</p>
+              <p className="text-blue-400 text-center">Start the conversation!</p>
             ) : (
               chat.map((msg, i) => (
-                <div key={i} className={i % 2 === 0 ? 'text-blue-700' : 'text-gray-800'}>
-                  <span className="font-bold">{i % 2 === 0 ? historicalFigures[selected].name : 'You'}:</span> {msg}
+                <div key={i} className={i % 2 === 0 ? 'text-white' : 'text-blue-300'}>
+                  <span className="font-bold">{i % 2 === 0 ? 'You' : historicalFigures[selected].name}:</span> {msg}
                 </div>
               ))
             )}
@@ -64,12 +64,12 @@ export default function Home() {
             }}
           >
             <input
-              className="flex-1 border rounded px-3 py-2"
+              className="flex-1 border-2 border-blue-400 rounded-lg px-4 py-2 bg-gray-900 text-white placeholder-blue-300 focus:outline-none focus:border-blue-500"
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder={`Ask ${historicalFigures[selected].name} anything...`}
             />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow">Send</button>
           </form>
         </section>
       )}

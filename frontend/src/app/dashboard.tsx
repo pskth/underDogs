@@ -6,31 +6,31 @@ export default function Dashboard() {
     const [input, setInput] = useState('');
 
     return (
-        <main className="min-h-screen bg-gray-50 p-8">
-            <h1 className="text-3xl font-bold mb-6 text-center">Custom Character Training</h1>
-            <section className="max-w-xl mx-auto bg-white rounded-lg shadow p-6 mb-8">
-                <h2 className="text-lg font-semibold mb-4">Upload PDF to Train Your Character</h2>
+        <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-800 p-8">
+            <h1 className="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-lg">Custom Character Training</h1>
+            <section className="max-w-xl mx-auto bg-gradient-to-br from-gray-800 to-purple-900 rounded-xl shadow-xl p-8 mb-10 border-2 border-purple-400">
+                <h2 className="text-xl font-bold mb-4 text-purple-200">Upload PDF to Train Your Character</h2>
                 <input
                     type="file"
                     accept="application/pdf"
-                    className="mb-4"
+                    className="mb-4 block w-full text-white bg-gray-900 border-2 border-purple-400 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
                     onChange={e => {
                         const file = e.target.files?.[0];
                         if (file) setPdfName(file.name);
                     }}
                 />
-                {pdfName && <p className="text-green-600">Uploaded: {pdfName}</p>}
-                <p className="text-gray-500 text-sm mt-2">(PDF upload and training integration required)</p>
+                {pdfName && <p className="text-green-400 font-semibold">Uploaded: {pdfName}</p>}
+                <p className="text-purple-100 text-sm mt-2">(PDF upload and training integration required)</p>
             </section>
             {pdfName && (
-                <section className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-bold mb-4">Chat with Your Custom Character</h3>
-                    <div className="h-48 overflow-y-auto border rounded mb-4 p-2 bg-gray-50">
+                <section className="max-w-xl mx-auto bg-gradient-to-br from-gray-800 to-purple-900 rounded-xl shadow-xl p-8 border-2 border-purple-400">
+                    <h3 className="text-xl font-bold mb-4 text-purple-200">Chat with Your Custom Character</h3>
+                    <div className="h-56 overflow-y-auto border rounded-lg mb-4 p-3 bg-gray-900 border-purple-400">
                         {customChat.length === 0 ? (
-                            <p className="text-gray-400">Start the conversation!</p>
+                            <p className="text-purple-400 text-center">Start the conversation!</p>
                         ) : (
                             customChat.map((msg, i) => (
-                                <div key={i} className={i % 2 === 0 ? 'text-purple-700' : 'text-gray-800'}>
+                                <div key={i} className={i % 2 === 0 ? 'text-purple-300' : 'text-white'}>
                                     <span className="font-bold">{i % 2 === 0 ? 'Custom Character' : 'You'}:</span> {msg}
                                 </div>
                             ))
@@ -46,12 +46,12 @@ export default function Dashboard() {
                         }}
                     >
                         <input
-                            className="flex-1 border rounded px-3 py-2"
+                            className="flex-1 border-2 border-purple-400 rounded-lg px-4 py-2 bg-gray-900 text-white placeholder-purple-300 focus:outline-none focus:border-purple-500"
                             value={input}
                             onChange={e => setInput(e.target.value)}
                             placeholder="Ask your custom character anything..."
                         />
-                        <button type="submit" className="bg-purple-500 text-white px-4 py-2 rounded">Send</button>
+                        <button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-lg font-semibold shadow">Send</button>
                     </form>
                 </section>
             )}
