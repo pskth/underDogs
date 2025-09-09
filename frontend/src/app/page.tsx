@@ -107,7 +107,7 @@ export default function Home() {
                 ) : (
                   chat.map((msg, i) => (
                     <div key={i} className={i % 2 === 0 ? 'text-white' : 'text-blue-300'}>
-                      <span className="font-bold">{i % 2 === 0 ? 'You' : historicalFigures[selected].name}:</span> {msg}
+                      <span className="font-bold">{i % 2 === 0 ? 'You' : historicalFigures[selected].name}:</span> {msg.message}
                     </div>
                   ))
                 )}
@@ -117,7 +117,11 @@ export default function Home() {
                 onSubmit={e => {
                   e.preventDefault();
                   if (!input.trim()) return;
-                  setChat([...chat, input, `(${historicalFigures[selected].name} responds with a placeholder answer)`]);
+                  setChat([
+                    ...chat,
+                    { sender: "You", message: input },
+                    { sender: historicalFigures[selected].name, message: "(responds with a placeholder answer)" }
+                  ]);
                   setInput('');
                 }}
               >
