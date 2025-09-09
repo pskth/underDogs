@@ -1,28 +1,77 @@
-"use client"
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 const historicalFigures = [
   {
-    name: 'Albert Einstein',
-    description: 'Physicist, Theory of Relativity',
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
+    id: 1,
+    name: "Albert Einstein",
+    description: "Physicist, Theory of Relativity",
+    avatar:
+      "https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg",
   },
   {
-    name: 'Isaac Newton',
-    description: 'Mathematician, Laws of Motion',
-    avatar: '/netwon.jpg',
+    id: 2,
+    name: "Isaac Newton",
+    description: "Mathematician, Laws of Motion",
+    avatar: "/netwon.jpg",
   },
   {
-    name: 'Marie Curie',
-    description: 'Chemist, Radioactivity Pioneer',
-    avatar: '/marie.jpg',
+    id: 3,
+    name: "Marie Curie",
+    description: "Chemist, Radioactivity Pioneer",
+    avatar: "/marie.jpg",
   },
 ];
 
 export default function Home() {
   const [selected, setSelected] = useState<number | null>(null);
-  const [chat, setChat] = useState<string[]>([]);
-  const [input, setInput] = useState('');
+  const [chat, setChat] = useState<{ sender: string; message: string }[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (selected === null || !input.trim()) return;
+
+    const figure = historicalFigures[selected];
+    const question = input.trim();
+
+    // Add user's message to chat
+    setChat((prev) => [...prev, { sender: "You", message: question }]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pdfs/chat/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          figure_id: figure.id,
+          question,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setChat((prev) => [
+          ...prev,
+          { sender: figure.name, message: data.answer },
+        ]);
+      } else {
+        setChat((prev) => [
+          ...prev,
+          { sender: "System", message: data.error || "Something went wrong." },
+        ]);
+      }
+    } catch (err) {
+      setChat((prev) => [
+        ...prev,
+        { sender: "System", message: "Failed to reach the server." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 p-8">
